@@ -1,4 +1,5 @@
 import express from 'express';
+import { USERS } from './userLogins';
 const app = express()
 const port = 3000
 
@@ -8,7 +9,12 @@ app.get('/status', (req, res) => { res.status(200).end(); });
 app.head('/status', (req, res) => { res.status(200).end(); });
 
 const basicAuthHandler = (req: express.Request, res: express.Response, next: express.NextFunction) => {
-  if (true) {
+  const b64auth = (req.headers.authorization || '').split(' ')[1] || '';
+  const [login, password] = Buffer.from(b64auth, 'base64').toString().split(':')
+
+  const user = USERS.users.find(row => row.userLogin === login && row.password === password);
+
+  if (!user) {
     res.set('WWW-Authenticate', 'Basic realm="tech-test-3"')
     res.status(401).send('Authentication required')
   }

@@ -26,5 +26,40 @@ describe('express', function () {
       .set('Authorization', 'Basic: bWF0dEBnbWFpbC5jb206dGhpcyBpcyBhIHZAbGlkIHBhc3N3b3JkIQ==');
       expect(res.statusCode).to.equal(200);
     });
+
+    it('should respond with 401 when called with empty username & password in Authorization header value', async () => {
+      const res = await request(server)
+      .get('/basic-auth')
+      .set('Authorization', 'Basic: Og==');
+      expect(res.statusCode).to.equal(401);
+    });
+
+    it('should respond with 401 when called with empty password in Authorization header value', async () => {
+      const res = await request(server)
+      .get('/basic-auth')
+      .set('Authorization', 'Basic: bWF0dEBnbWFpbC5jb206');
+      expect(res.statusCode).to.equal(401);
+    });
+
+    it('should respond with 401 when called with empty username in Authorization header value', async () => {
+      const res = await request(server)
+      .get('/basic-auth')
+      .set('Authorization', 'Basic: OnRoaXMgaXMgYSB2QGxpZCBwYXNzd29yZCE=');
+      expect(res.statusCode).to.equal(401);
+    });
+
+    it('should respond with 401 when called with mixed username & password in Authorization header value', async () => {
+      const res = await request(server)
+      .get('/basic-auth')
+      .set('Authorization', 'Basic: dGVzdEBnbWFpbC5jb206dGhpcyBpcyBhIHZAbGlkIHBhc3N3b3JkIQ==');
+      expect(res.statusCode).to.equal(401);
+    });
+
+    it('should respond with 401 when called with invalid base64 in Authorization header value', async () => {
+      const res = await request(server)
+      .get('/basic-auth')
+      .set('Authorization', 'Basic: dummy');
+      expect(res.statusCode).to.equal(401);
+    });
   })
 });
