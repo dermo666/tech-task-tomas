@@ -15,6 +15,14 @@ export const USERS = {
     {
       userLogin: 'john@google.com',
       password: '!tSp5*MHhzfm@I27*B@'
+    },
+    {
+      userLogin: 'john2@google.com',
+      password: '!tSp5*MHhzfm@I:27*B@'
+    },
+    {
+      userLogin: 'jo:hn2@google.com',
+      password: '!tSp5*MHhzfm@I27*B@'
     }
   ]
 }

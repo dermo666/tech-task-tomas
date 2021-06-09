@@ -27,6 +27,13 @@ describe('express', function () {
       expect(res.statusCode).to.equal(200);
     });
 
+    it('should respond with 200 when called with a password containing colon in Authorization header value', async () => {
+      const res = await request(server)
+      .get('/basic-auth')
+      .set('Authorization', 'Basic: am9objJAZ29vZ2xlLmNvbTohdFNwNSpNSGh6Zm1ASToyNypCQA=='); // user john2@google.com
+      expect(res.statusCode).to.equal(200);
+    });
+
     it('should respond with 401 when called with empty username & password in Authorization header value', async () => {
       const res = await request(server)
       .get('/basic-auth')
@@ -59,6 +66,13 @@ describe('express', function () {
       const res = await request(server)
       .get('/basic-auth')
       .set('Authorization', 'Basic: dummy');
+      expect(res.statusCode).to.equal(401);
+    });
+
+    it('should respond with 401 when called with email containing colon in Authorization header value', async () => {
+      const res = await request(server)
+      .get('/basic-auth')
+      .set('Authorization', 'Basic: am86aG4yQGdvb2dsZS5jb206IXRTcDUqTUhoemZtQEkyNypCQA==');
       expect(res.statusCode).to.equal(401);
     });
   })

@@ -10,7 +10,8 @@ app.head('/status', (req, res) => { res.status(200).end(); });
 
 const basicAuthHandler = (req: express.Request, res: express.Response, next: express.NextFunction) => {
   const b64auth = (req.headers.authorization || '').split(' ')[1] || '';
-  const [login, password] = Buffer.from(b64auth, 'base64').toString().split(':')
+  const [login, ...passwordParts] = Buffer.from(b64auth, 'base64').toString().split(':')
+  const password = passwordParts.join(':');
 
   const user = USERS.users.find(row => row.userLogin === login && row.password === password);
 
